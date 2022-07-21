@@ -83,8 +83,6 @@ fun MapScreen(
         },
     )
 
-
-
     when {
         ContextCompat.checkSelfPermission(
             context,
@@ -103,36 +101,30 @@ fun MapScreen(
         }
     }
 
-
-
-
     ConstraintLayout {
         val (centerAlignedTopAppBar, map) = createRefs()
 
 
-        NavHost(
-            navController = navController,
-            startDestination = "topBarMap",
-            modifier = Modifier
-                .constrainAs(centerAlignedTopAppBar) {
-                    top.linkTo(parent.top, margin = 0.dp)
-                    start.linkTo(parent.start, margin = 0.dp)
-                    end.linkTo(parent.end, margin = 0.dp)
-                }
-        ) {
-            composable("topBarMap") {
 
-                if (windowSize == WindowSize.COMPACT) {
-                    TopBar(
-                        scope,
-                        drawerState,
-                        "Map",
-                        navControllerDrawer
-                    )
-                } else {
+
+
                     CenterAlignedTopAppBar(
+                        modifier = Modifier.constrainAs(centerAlignedTopAppBar) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            end.linkTo(parent.end)
+                        },
                         title = {
                             Text(text = "Map")
+                        },
+                        navigationIcon = {
+                            if(windowSize == WindowSize.COMPACT) {
+                                IconButton(onClick = {
+                                    scope.launch { drawerState.open() }
+                                }) {
+                                    Icon(Icons.Filled.Menu, "")
+                                }
+                            }
                         },
                         actions = {
                             IconButton(onClick = {
@@ -147,9 +139,6 @@ fun MapScreen(
                         },
 
                         )
-                }
-            }
-        }
 
         if (userPosition != LatLng(0.0, 0.0)) {
 
@@ -193,7 +182,6 @@ fun MapScreen(
                     }
                 }
             }
-
 
         } else {
             Text(text = "Impossible de recupérer la localisation des services google play verifier que une localisation a été enregistré dans ceux ci ")

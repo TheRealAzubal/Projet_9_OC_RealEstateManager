@@ -35,8 +35,6 @@ fun RowList(
     windowSize: WindowSize,
     navControllerTwoPane: NavHostController
 ) {
-
-    if(windowSize == WindowSize.COMPACT){
         val items2  by realEstateViewModel.getRealEstatePhotosWithId(item.id.toString()).observeAsState()
 
         Card(
@@ -48,7 +46,12 @@ fun RowList(
             Row(Modifier.clickable {
                 val item = Uri.encode(Gson().toJson(item))
 
-                navControllerDrawer.navigate("detailScreen/$item")
+                if(windowSize == WindowSize.COMPACT || windowSize == WindowSize.MEDIUM){
+                    navControllerDrawer.navigate("detailScreen/$item")
+                }else{
+                    navControllerTwoPane.navigate("detailScreen/$item")
+                }
+
 
             }) {
 
@@ -64,7 +67,6 @@ fun RowList(
                         contentScale = ContentScale.Crop,
                     )
                 }
-
 
 
                 Column(
@@ -84,57 +86,6 @@ fun RowList(
                 }
             }
         }
-    }else{
-        val items2  by realEstateViewModel.getRealEstatePhotosWithId(item.id.toString()).observeAsState()
-
-        Card(
-            modifier = Modifier
-                .padding(horizontal = 8.dp, vertical = 8.dp)
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(corner = CornerSize(16.dp))
-        ) {
-            Row(Modifier.clickable {
-
-                val item = Uri.encode(Gson().toJson(item))
-
-                navControllerTwoPane.navigate("detailScreen/$item")
-            }) {
-
-                Box(
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(84.dp)
-                        .clip(RoundedCornerShape(corner = CornerSize(16.dp)))
-                        .background(MaterialTheme.colorScheme.tertiary)
-                ) {
-                    GlideImage(
-                        imageModel = items2?.get(0)?.photoUrl,
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-
-
-
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .align(Alignment.CenterVertically)
-                ) {
-                    Text(
-                        text = item.type.toString(),
-                        style = MaterialTheme.typography.headlineLarge
-                    )
-                    Text(
-                        text = "$"+item.price.toString(),
-                        style = MaterialTheme.typography.headlineSmall
-                    )
-                }
-            }
-        }
-    }
-
-
 }
 
 

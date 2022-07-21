@@ -15,21 +15,11 @@ import androidx.navigation.NavController
 @Composable
 @ExperimentalMaterial3Api
 fun SettingsScreen(navController: NavController) {
-
     Scaffold(
-
-
-
-
-
         content = {
-
-
             ConstraintLayout {
                 val (centerAlignedTopAppBar,text) = createRefs()
-
                 CenterAlignedTopAppBar(
-
                     title = {
                         Text(text = "Settings")
                     },
@@ -45,7 +35,6 @@ fun SettingsScreen(navController: NavController) {
                         start.linkTo(parent.start, margin = 0.dp)
                         end.linkTo(parent.end, margin = 0.dp)
                     }
-
                 )
 
                 Text(text = "",modifier = Modifier.constrainAs(text) {
@@ -54,8 +43,6 @@ fun SettingsScreen(navController: NavController) {
                     end.linkTo(parent.end, margin = 0.dp)
                 })
             }
-
-
         },
         floatingActionButton = {
             FloatingActionButton(
@@ -65,15 +52,5 @@ fun SettingsScreen(navController: NavController) {
                 Icon(Icons.Filled.Favorite, "Localized description")
             }
         }
-
-
     )
-
-
-
-
-
-
-
-
 }

@@ -69,7 +69,7 @@ fun MainScreen(
         },
         content = {
 
-            if (windowSize == WindowSize.COMPACT) {
+            if (windowSize == WindowSize.COMPACT ) {
 
                 Scaffold(
                     content = { innerPadding ->
@@ -134,7 +134,116 @@ fun MainScreen(
 
                 )
 
-            } else {
+            } else if(windowSize == WindowSize.MEDIUM){
+                ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+                    val (navigationRail, box) = createRefs()
+
+                    NavigationRail(modifier = Modifier.constrainAs(navigationRail) {
+                        top.linkTo(parent.top, margin = 0.dp)
+                        start.linkTo(parent.start, margin = 0.dp)
+                        bottom.linkTo(parent.bottom, margin = 0.dp)
+                    }.fillMaxWidth(0.10f)) {
+                        NavigationRailItem(
+                            icon = { Icon(Icons.Default.Menu, contentDescription = null) },
+                            selected = selectedItem == 3,
+                            onClick = {
+                                scope.launch { drawerState.open() }
+                            }
+                        )
+
+                        items.forEachIndexed { index, item ->
+                            NavigationRailItem(
+                                icon = { Icon(item.icon, contentDescription = null) },
+                                label = { Text(item.title) },
+                                selected = selectedItem == index,
+                                onClick = {
+                                    selectedItem = index
+                                    navController.navigate(item.route)
+                                }
+                            )
+                        }
+                    }
+
+                    Scaffold(
+                        modifier = Modifier
+                            .constrainAs(box) {
+                                top.linkTo(parent.top, margin = 0.dp)
+                                start.linkTo(navigationRail.end, margin = 10.dp)
+                                bottom.linkTo(parent.bottom, margin = 0.dp)
+                                end.linkTo(parent.end, margin = 10.dp)
+                            }
+                            .fillMaxWidth(0.90f)
+                            .fillMaxHeight(),
+                        content = { innerPadding ->
+
+                            NavHost(
+                                navController = navController,
+                                startDestination = "listScreen"
+                            ) {
+                                composable(Screen.ListScreen.route) {
+                                    ListScreen(
+                                        drawerState,
+                                        scope,
+                                        realEstateViewModel,
+                                        innerPadding,
+                                        navControllerDrawer,
+                                        windowSize ,
+                                        navControllerTwoPane
+                                    )
+                                }
+                                composable(Screen.MapScreen.route) {
+                                    MapScreen(
+                                        drawerState,
+                                        scope,
+                                        realEstateViewModel,
+                                        navControllerDrawer,
+                                        navControllerTwoPane,
+                                        windowSize
+                                    )
+                                }
+                            }
+
+                        },
+                        floatingActionButton = {
+                            FloatingActionButton(
+                                onClick = { /* do something */
+                                    context.startActivity(
+                                        Intent(context, NewRealEstateActivity::class.java)
+                                    )
+                                },
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(15.dp))
+                            ) {
+                                Icon(Icons.Filled.Add, "Localized description")
+                            }
+                        }
+
+                    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+
+
+
+
+
+
+
+            }
+            else if (windowSize == WindowSize.EXPANDED){
 
 
 
@@ -253,6 +362,7 @@ fun MainScreen(
                                         realEstateViewModel,
                                         item,
                                         navControllerDrawer,
+                                        windowSize
                                     ) }
                                 composable("start"){ Start()}
                             }

@@ -36,31 +36,31 @@ fun ListScreen(
 
     val items: List<RealEstate> by realEstateViewModel.getRealEstates.observeAsState(listOf())
 
-    if(windowSize == WindowSize.COMPACT ){
         Scaffold(
             modifier = Modifier.padding(innerPadding),
             topBar = {
-
                 CenterAlignedTopAppBar(
                     title = {
                         Text(text = "RealEstateManager")
                     },
                     navigationIcon = {
-                        IconButton(onClick = {
-                            scope.launch { drawerState.open() }
-                        }) {
-                            Icon(Icons.Filled.Menu, "")
+                        if(windowSize == WindowSize.COMPACT) {
+                            IconButton(onClick = {
+                                scope.launch { drawerState.open() }
+                            }) {
+                                Icon(Icons.Filled.Menu, "")
+                            }
                         }
                     },
                     actions = {
-                        IconButton(onClick = {
-                            navControllerDrawer.navigate("filterScreen")
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_baseline_filter_list_24),
-                                contentDescription = ""
-                            )
-                        }
+                            IconButton(onClick = {
+                                navControllerDrawer.navigate("filterScreen")
+                            }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_baseline_filter_list_24),
+                                    contentDescription = ""
+                                )
+                            }
                     },
                 )
 
@@ -75,41 +75,6 @@ fun ListScreen(
                 }
             }
         )
-    }else {
-
-        Scaffold(
-            modifier = Modifier.padding(innerPadding),
-            topBar = {
-
-                CenterAlignedTopAppBar(
-                    title = {
-                        Text(text = "RealEstates")
-                    },
-                    actions = {
-                        IconButton(onClick = {
-                            navControllerDrawer.navigate("filterScreen")
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_baseline_filter_list_24),
-                                contentDescription = ""
-                            )
-                        }
-                    },
-                )
-
-            },
-            content = {
-                LazyColumn(
-                    modifier = Modifier.padding(it),
-                ) {
-                    items(items) { item ->
-                        RowList(item, realEstateViewModel, navControllerDrawer,windowSize,navControllerTwoPane)
-                    }
-                }
-            }
-        )
-    }
-
 }
 
 

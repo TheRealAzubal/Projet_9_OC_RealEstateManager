@@ -32,6 +32,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.models.RealEstate
+import com.openclassrooms.realestatemanager.utils.WindowSize
 import com.openclassrooms.realestatemanager.viewmodels.RealEstateViewModel
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -41,6 +42,7 @@ fun RealEstateDetailScreen(
     realEstateViewModel: RealEstateViewModel,
     itemRealEstate: RealEstate?,
     navController: NavController,
+    windowSize: WindowSize,
     ) {
 
     if(itemRealEstate != null) {
@@ -82,10 +84,12 @@ fun RealEstateDetailScreen(
                             Text(text = "Estate Manager")
                         },
                         navigationIcon = {
-                            IconButton(onClick = {
-                                navController.popBackStack()
-                            }) {
-                                Icon(Icons.Filled.ArrowBack, "")
+                            if(windowSize == WindowSize.COMPACT || windowSize == WindowSize.MEDIUM) {
+                                IconButton(onClick = {
+                                    navController.popBackStack()
+                                }) {
+                                    Icon(Icons.Filled.ArrowBack, "")
+                                }
                             }
                         },
                         modifier = Modifier.constrainAs(centerAlignedTopAppBar) {

@@ -101,7 +101,8 @@ class MainActivity : ComponentActivity() {
                         RealEstateDetailScreen(
                             realEstateViewModel,
                             item,
-                            navController
+                            navController,
+                            windowSize
                         )
                     }
 
